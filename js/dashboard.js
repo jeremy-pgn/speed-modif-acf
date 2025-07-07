@@ -38,9 +38,7 @@ function setupEventListeners() {
     // Recherche globale
     document.getElementById('globalSearch').addEventListener('input', handleGlobalSearch);
 
-    // Actualisation
-    document.getElementById('refreshSection').addEventListener('click', handleRefreshSection);
-
+   
     // Déconnexion
     document.getElementById('logoutBtn').addEventListener('click', handleLogout);
 }
@@ -343,10 +341,6 @@ function handleEdit(fieldId) {
     alert(`Modification du champ : ${fieldId}`);
 }
 
-function handleRefreshSection() {
-    switchSection(currentSection);
-    showToast('Section actualisée', 'success');
-}
 
 function handleLogout() {
     if (confirm('Déconnexion ?')) {
