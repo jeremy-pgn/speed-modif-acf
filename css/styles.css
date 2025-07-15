@@ -190,7 +190,7 @@ bg-primary {
   }
 }
 .nav-dashboard {
-  background: linear-gradient(to right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
+  background: linear-gradient(0deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
 }
 
 .navbar-brand .logo-s {
