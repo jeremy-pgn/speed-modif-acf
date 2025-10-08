@@ -2,10 +2,10 @@ SMA/
 │
 ├── api/
 │   ├── auth.php
-│   ├── config.php
+│   ├── config.php terminé
 │   └── fields.php
 │
-├── css/
+├── css/ terminé
 │   ├── _sanitize.scss
 │   ├── _variables.scss
 │   ├── styles.css
@@ -26,7 +26,8 @@ SMA/
 │
 ├── js/
 │   ├── api.js
-│   ├── auth.js
+│   ├── auth.js terminé
+│   ├── dashboard.js terminé
 │   └── scripts.js
 │
 ├── .gitignore

@@ -1,3 +1,5 @@
+// js/auth.js
+
 // Variables globales
 let loginAttempts = 0;
 const MAX_ATTEMPTS = 3;

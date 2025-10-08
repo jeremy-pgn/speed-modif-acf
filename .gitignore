@@ -1,3 +1,5 @@
+# .gitignore
+
 # Fichiers de configuration
 api/config.php
 config/database.php

@@ -1,3 +1,5 @@
+// js/dashboard.js
+
 // Variables globales
 let acfData = {};
 let currentSection = 'identite';
@@ -15,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
  * Vérification de l'authentification
  */
 function checkAuthentication() {
-    // const token = localStorage.getItem('authToken');
-    // if (!token) {
-    //     window.location.href = 'index.html';
-    //     return;
-    // }
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        window.location.href = 'index.html';
+        return;
+    }
 }
 
 /**

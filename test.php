@@ -1,3 +1,5 @@
+{# text.php #}
+
 <?php
 echo "<h1>🚀 Speed Modif ACF - Docker OK!</h1>";
 
