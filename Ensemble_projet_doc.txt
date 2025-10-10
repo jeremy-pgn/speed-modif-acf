@@ -1,0 +1,105 @@
+**Excellente question ! Voici le stack technique complet de Speed Modif ACF ! 🎯** 
+
+## 🚀 **STACK TECHNIQUE SPEED MODIF ACF**
+
+### **💻 LANGAGES DE PROGRAMMATION**
+
+#### **Front-End :**
+- **HTML5** - Structure des pages et interface utilisateur
+- **CSS3** - Stylisation et design responsive
+- **JavaScript (ES6+)** - Interactivité et logique client
+
+#### **Back-End :**
+- **PHP 8.x** - Logique serveur et API REST
+- **SQL** - Requêtes et gestion des bases de données
+
+### **🛠️ TECHNOLOGIES & FRAMEWORKS**
+
+#### **Base de Données :**
+- **MySQL 8.0** - Stockage des données (2 bases : SMA + WordPress)
+- **PDO** - Interface PHP pour accès sécurisé aux bases
+
+#### **API & Architecture :**
+- **API REST** - Communication front-end ↔ back-end
+- **JSON** - Format d'échange de données
+- **AJAX/Fetch** - Requêtes asynchrones
+- **Architecture MVC** - Séparation des responsabilités
+
+#### **Sécurité :**
+- **Authentification par Token** - Sécurisation des accès
+- **Hashage de mots de passe** - Protection des données utilisateur
+- **Validation côté serveur** - Sécurisation des inputs
+- **CORS** - Gestion des accès cross-origin
+
+### **🐳 ENVIRONNEMENT DE DÉVELOPPEMENT**
+
+#### **Conteneurisation :**
+- **Docker** - Conteneurisation de l'application
+- **Docker Compose** - Orchestration des services
+
+#### **Serveur Web :**
+- **Apache HTTP Server** - Serveur web principal
+- **WAMP** - Stack de développement local (WordPress)
+
+#### **Outils de Développement :**
+- **Git** - Gestion de versions
+- **GitHub** - Hébergement du code source
+- **VS Code** - Éditeur de code
+- **phpMyAdmin** - Interface d'administration MySQL
+
+### **🔗 INTÉGRATIONS**
+
+#### **WordPress :**
+- **ACF (Advanced Custom Fields)** - Plugin WordPress cible
+- **wp_postmeta** - Table WordPress pour métadonnées
+- **Synchronisation bidirectionnelle** - SMA ↔ WordPress
+
+#### **Architecture Hybride :**
+- **Docker (Speed Modif ACF)** - Port 8080
+- **WAMP (WordPress)** - Port 3306 
+- **Communication inter-services** - via host.docker.internal
+
+### **📁 STRUCTURE DU PROJET**
+
+```
+speed-modif-acf/
+├── api/
+│   ├── config.php          (PHP - Configuration)
+│   ├── fields.php          (PHP - API REST)
+│   ├── auth.php            (PHP - Authentification)
+│   └── database.sql        (SQL - Structure base)
+├── assets/
+│   ├── css/               (CSS3 - Styles)
+│   ├── js/                (JavaScript - Logique)
+│   └── images/            (Assets visuels)
+├── pages/
+│   ├── login.html         (HTML5 - Interface)
+│   ├── dashboard.html     (HTML5 - Interface)
+│   └── index.html         (HTML5 - Interface)
+├── docker-compose.yml     (Docker - Configuration)
+├── Dockerfile            (Docker - Image)
+└── .gitignore           (Git - Exclusions)
+```
+
+### **🎯 COMPÉTENCES DWWM COUVERTES**
+
+#### **Front-End (CP1) :**
+- ✅ **HTML5/CSS3** - Interfaces utilisateur statiques
+- ✅ **JavaScript** - Interactivité et dynamisme
+- ✅ **Responsive Design** - Adaptabilité mobile
+
+#### **Back-End (CP2) :**
+- ✅ **PHP** - Développement serveur
+- ✅ **MySQL** - Gestion bases de données
+- ✅ **API REST** - Services web
+
+#### **Déploiement (CP3) :**
+- ✅ **Docker** - Conteneurisation
+- ✅ **Git** - Gestion de versions
+- ✅ **Architecture** - Conception système
+
+## 🏆 **RÉSUMÉ TECHNIQUE**
+
+**Speed Modif ACF est une application web moderne utilisant un stack LAMP conteneurisé avec Docker, développée en PHP/MySQL côté serveur et HTML/CSS/JavaScript côté client, intégrée à WordPress via une API REST sécurisée pour la synchronisation bidirectionnelle des champs ACF !**
+
+**Stack parfait pour un projet DWWM ! 🚀**

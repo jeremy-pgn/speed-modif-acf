@@ -32,8 +32,8 @@ SMA/
 │
 ├── .gitignore
 │
-├── dashboard.html
+├── dashboard.html terminé 
 │
-├── docker-compose.yml
+├── docker-compose.yml terminé
 │
-└── index.html
+└── index.html terminé

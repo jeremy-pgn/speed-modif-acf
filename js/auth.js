@@ -157,7 +157,7 @@ function checkLoginAttempts() {
         showError('Trop de tentatives. Veuillez patienter 5 minutes.');
         setTimeout(() => {
             loginAttempts = 0;
-        }, 300000);
+        }, 0);
         return false;
     }
     return true;
