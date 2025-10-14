@@ -33,26 +33,11 @@ class SimpleAuth {
     }
     
     /**
-     * Vérifier les identifiants (requête préparée pour la base)
+     * Vérifier les identifiants (uniquement via base de données)
      */
     public function login($email, $password) {
         try {
-            // D'abord vérifier l'admin par défaut (comme avant)
-            if ($email === 'admin@speedmodifacf.com' && $password === 'password') {
-                return [
-                    'success' => true,
-                    'message' => 'Connexion réussie',
-                    'token' => 'temp_token_123',
-                    'user' => [
-                        'id' => 1,
-                        'email' => $email,
-                        'name' => 'Administrateur',
-                        'role' => 'admin'
-                    ]
-                ];
-            }
-            
-            // Ensuite chercher dans la base de données (requête préparée)
+            // Rechercher uniquement dans la base de données
             $stmt = $this->pdo->prepare("
                 SELECT id, email, password, name, role 
                 FROM sma_users 
@@ -63,12 +48,30 @@ class SimpleAuth {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($user) {
-                // Vérifier le mot de passe (si c'est hashé dans la base)
-                if (password_verify($password, $user['password']) || $password === $user['password']) {
+                // Vérifier le mot de passe (hashé ou texte brut)
+                $password_valid = false;
+                
+                if (password_verify($password, $user['password'])) {
+                    // Mot de passe hashé avec password_hash()
+                    $password_valid = true;
+                } elseif ($password === $user['password']) {
+                    // Mot de passe en texte brut (pour compatibilité)
+                    $password_valid = true;
+                }
+                
+                if ($password_valid) {
+                    // Mettre à jour la date de dernière connexion
+                    $updateStmt = $this->pdo->prepare("
+                        UPDATE sma_users 
+                        SET last_login = NOW() 
+                        WHERE id = ?
+                    ");
+                    $updateStmt->execute([$user['id']]);
+                    
                     return [
                         'success' => true,
                         'message' => 'Connexion réussie',
-                        'token' => 'temp_token_123',
+                        'token' => 'temp_token_123',  // Token fixe simple
                         'user' => [
                             'id' => $user['id'],
                             'email' => $user['email'],
@@ -99,6 +102,11 @@ try {
     // Validation basique
     if (empty($email) || empty($password)) {
         throw new Exception('Email et mot de passe requis');
+    }
+    
+    // Validation format email
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        throw new Exception('Format email invalide');
     }
     
     // Authentification

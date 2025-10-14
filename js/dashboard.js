@@ -8,10 +8,15 @@ let allFields = [];
 // Initialisation
 document.addEventListener('DOMContentLoaded', function() {
     checkAuthentication();
+    
+    // Afficher le nom de l'utilisateur connecté
+    document.getElementById('userName').textContent = JSON.parse(localStorage.getItem('user') || '{}').name || 'Utilisateur';
+    
     loadACFData();
     setupEventListeners();
     switchSection('identite');
 });
+
 
 /**
  * Vérification de l'authentification
@@ -40,7 +45,6 @@ function setupEventListeners() {
     // Recherche globale
     document.getElementById('globalSearch').addEventListener('input', handleGlobalSearch);
 
-   
     // Déconnexion
     document.getElementById('logoutBtn').addEventListener('click', handleLogout);
 }
@@ -339,39 +343,18 @@ function getHistoryIcon(action) {
     return icons[action] || 'bi-clock';
 }
 
+/**
+ * Gestionnaires d'événements
+ */
 function handleEdit(fieldId) {
-    alert(`Modification du champ : ${fieldId}`);
+    console.log(`Modification du champ : ${fieldId}`);
+    // Votre logique d'édition ici
 }
 
-
 function handleLogout() {
-    if (confirm('Déconnexion ?')) {
+    if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
         window.location.href = 'index.html';
     }
-}
-
-function showToast(message, type) {
-    // Toast Bootstrap simple
-    const toastHtml = `
-        <div class="toast align-items-center text-bg-${type} border-0" role="alert">
-            <div class="d-flex">
-                <div class="toast-body">${message}</div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-            </div>
-        </div>
-    `;
-    
-    let toastContainer = document.querySelector('.toast-container');
-    if (!toastContainer) {
-        toastContainer = document.createElement('div');
-        toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
-        document.body.appendChild(toastContainer);
-    }
-    
-    toastContainer.insertAdjacentHTML('beforeend', toastHtml);
-    const toastElement = toastContainer.lastElementChild;
-    const toast = new bootstrap.Toast(toastElement);
-    toast.show();
 }
