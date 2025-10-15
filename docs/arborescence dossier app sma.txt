@@ -14,9 +14,8 @@ SMA/
 │   ├── styles.css.map
 │   └── styles.scss
 │
-├── database/
-│   ├── data.sql
-│   └── schema.sql
+├── database/  
+│   └── sma_database.sql
 │
 ├── docs/
 │   └── README.md
@@ -26,9 +25,7 @@ SMA/
 │
 ├── js/
 │   ├── api.js
-│   ├── auth.js
-│   ├── dashboard.js
-│   └── scripts.js
+│   └── app.js
 │
 ├── .gitignore
 │

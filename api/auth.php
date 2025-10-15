@@ -1,131 +1,68 @@
 <?php
-// api/auth.php
-
+// Inclusion du fichier de configuration de la base de données
 require_once 'config.php';
 
+// Démarrage de la session pour pouvoir stocker les informations utilisateur
+session_start();
+
+// Définition de l'en-tête pour indiquer que la réponse sera en JSON
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
+// Vérification que la requête utilise la méthode POST (sécurité)
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
-    exit();
+    exit;
 }
 
-/**
- * Classe simple pour la gestion des utilisateurs (POO basique)
- */
-class SimpleAuth {
-    private $pdo;
-    
-    public function __construct() {
-        global $dsn, $username, $password_db, $options;
-        try {
-            $this->pdo = new PDO($dsn, $username, $password_db, $options);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            throw new Exception('Erreur de connexion');
-        }
-    }
-    
-    /**
-     * Vérifier les identifiants (uniquement via base de données)
-     */
-    public function login($email, $password) {
-        try {
-            // Rechercher uniquement dans la base de données
-            $stmt = $this->pdo->prepare("
-                SELECT id, email, password, name, role 
-                FROM sma_users 
-                WHERE email = ? AND is_active = 1
-                LIMIT 1
-            ");
-            $stmt->execute([$email]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if ($user) {
-                // Vérifier le mot de passe (hashé ou texte brut)
-                $password_valid = false;
-                
-                if (password_verify($password, $user['password'])) {
-                    // Mot de passe hashé avec password_hash()
-                    $password_valid = true;
-                } elseif ($password === $user['password']) {
-                    // Mot de passe en texte brut (pour compatibilité)
-                    $password_valid = true;
-                }
-                
-                if ($password_valid) {
-                    // Mettre à jour la date de dernière connexion
-                    $updateStmt = $this->pdo->prepare("
-                        UPDATE sma_users 
-                        SET last_login = NOW() 
-                        WHERE id = ?
-                    ");
-                    $updateStmt->execute([$user['id']]);
-                    
-                    return [
-                        'success' => true,
-                        'message' => 'Connexion réussie',
-                        'token' => 'temp_token_123',  // Token fixe simple
-                        'user' => [
-                            'id' => $user['id'],
-                            'email' => $user['email'],
-                            'name' => $user['name'],
-                            'role' => $user['role']
-                        ]
-                    ];
-                }
-            }
-            
-            return ['success' => false, 'message' => 'Identifiants invalides'];
-            
-        } catch (PDOException $e) {
-            error_log('Erreur SQL: ' . $e->getMessage());
-            return ['success' => false, 'message' => 'Erreur serveur'];
-        }
-    }
+// Récupération et nettoyage des données du formulaire
+$email = $_POST['email'] ?? '';
+$password = $_POST['password'] ?? '';
+
+// Validation des champs obligatoires
+if (empty($email) || empty($password)) {
+    echo json_encode(['success' => false, 'message' => 'Email et password requis']);
+    exit;
 }
 
-// === TRAITEMENT PRINCIPAL ===
 try {
-    $auth = new SimpleAuth();
+    // Requête pour récupérer l'utilisateur actif avec l'email fourni
+    $stmt = $pdo->prepare("SELECT id, name, password FROM sma_users WHERE email = ? AND is_active = 1");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    // Récupérer les données
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-    
-    // Validation basique
-    if (empty($email) || empty($password)) {
-        throw new Exception('Email et mot de passe requis');
+    // Si l'utilisateur existe dans la base
+    if ($user) {
+        $isValidPassword = false;
+        
+        // Vérification du mot de passe avec méthodes de hachage 
+        
+       
+        // Mot de passe hashé avec password_hash() 
+        if (password_verify($password, $user['password'])) {
+            $isValidPassword = true;
+        }
+        
+        
+        // Si le mot de passe est correct
+        if ($isValidPassword) {
+            // Création de la session utilisateur
+            $_SESSION['logged'] = true;
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['name'];
+            
+            // Retour de succès
+            echo json_encode(['success' => true, 'message' => 'Connexion réussie']);
+        } else {
+            // Mot de passe incorrect
+            echo json_encode(['success' => false, 'message' => 'Mot de passe incorrect']);
+        }
+    } else {
+        // Utilisateur non trouvé ou inactif
+        echo json_encode(['success' => false, 'message' => 'Utilisateur non trouvé']);
     }
-    
-    // Validation format email
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        throw new Exception('Format email invalide');
-    }
-    
-    // Authentification
-    $result = $auth->login($email, $password);
-    
-    // Réponse
-    if (!$result['success']) {
-        http_response_code(401);
-    }
-    
-    echo json_encode($result);
     
 } catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode([
-        'success' => false, 
-        'message' => $e->getMessage()
-    ]);
+    // Gestion des erreurs de base de données ou autres exceptions
+    echo json_encode(['success' => false, 'message' => 'Erreur: ' . $e->getMessage()]);
 }
 ?>
