@@ -2,10 +2,12 @@ SMA/
 │
 ├── api/
 │   ├── auth.php
-│   ├── config.php terminé
+│   ├── config.php
 │   └── fields.php
 │
-├── css/ terminé
+├── css/ 
+│   ├── _connexion.scss
+│   ├── _dashboard.scss
 │   ├── _sanitize.scss
 │   ├── _variables.scss
 │   ├── styles.css
@@ -19,21 +21,19 @@ SMA/
 ├── docs/
 │   └── README.md
 │
-├── dovs/
-│
 ├── img/
 │   └── logo/
 │
 ├── js/
 │   ├── api.js
-│   ├── auth.js terminé
-│   ├── dashboard.js terminé
+│   ├── auth.js
+│   ├── dashboard.js
 │   └── scripts.js
 │
 ├── .gitignore
 │
-├── dashboard.html terminé 
+├── dashboard.html 
 │
-├── docker-compose.yml terminé
+├── docker-compose.yml
 │
-└── index.html terminé
+└── index.html

@@ -1,6 +1,7 @@
 /**
- * SPEED MODIF ACF - API CLIENT SIMPLE
- * Version sans déconnexion automatique
+ * js/api.js
+ * 
+ * SPEED MODIF ACF - API CLIENT
  */
 
 // Configuration API
