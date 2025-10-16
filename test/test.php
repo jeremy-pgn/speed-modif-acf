@@ -1,5 +1,3 @@
-{# text.php #}
-
 <?php
 echo "<h1>🚀 Speed Modif ACF - Docker OK!</h1>";
 
@@ -10,6 +8,4 @@ try {
 } catch (Exception $e) {
     echo "<p style='color: red;'>❌ MySQL : " . $e->getMessage() . "</p>";
 }
-
-phpinfo();
 ?>

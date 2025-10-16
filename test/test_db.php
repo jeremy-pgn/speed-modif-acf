@@ -1,5 +1,5 @@
 <?php
-require_once 'api/config.php';
+require_once '../api/config.php';
 
 try {
     $pdo = new PDO($dsn, $username, $password_db, $options);

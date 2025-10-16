@@ -1,4 +1,5 @@
 /**
+ * js/app.js
  * Application SMA - Speed Modif ACF
  * Interface principale pour la gestion des champs ACF avec synchronisation WordPress
  * Respecte 100% le design et la structure originale
@@ -9,7 +10,7 @@
 // ========================================
 
 // Structure de données principale pour stocker les champs ACF organisés par section
-let acfData = {};
+let acfData = {}; 
 
 // Section actuellement affichée dans l'interface
 let currentSection = 'identite';
@@ -410,29 +411,6 @@ function renderSearchResults(results, searchTerm) {
             handleEdit(fieldId, dbId);
         });
     });
-}
-
-// ========================================
-// GESTION DES DONNÉES
-// ========================================
-
-/**
- * Génération de l'historique factice pour la démonstration
- */
-function generateHistory() {
-    const actions = ['Modification', 'Création', 'Suppression'];
-    const users = ['John Doe', 'Jane Smith', 'Admin'];
-    
-    // Création d'un historique basé sur les dernières modifications
-    acfData.historique = allFields
-        .sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified))
-        .slice(0, 10)
-        .map(field => ({
-            action: actions[Math.floor(Math.random() * actions.length)],
-            field: field.title,
-            timestamp: field.lastModified,
-            user: users[Math.floor(Math.random() * users.length)]
-        }));
 }
 
 // ========================================

@@ -1,4 +1,6 @@
 <?php
+// api/auth.php
+
 // Inclusion du fichier de configuration de la base de données
 require_once 'config.php';
 
@@ -40,8 +42,7 @@ try {
         // Mot de passe hashé avec password_hash() 
         if (password_verify($password, $user['password'])) {
             $isValidPassword = true;
-        }
-        
+        }        
         
         // Si le mot de passe est correct
         if ($isValidPassword) {

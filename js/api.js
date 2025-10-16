@@ -1,4 +1,5 @@
 /**
+ * js/api.js
  * Module API - Client JavaScript pour l'application Speed Modif ACF
  * Fournit une interface pour l'authentification et la gestion des champs ACF
  * Utilise l'API Fetch pour les communications avec le serveur
