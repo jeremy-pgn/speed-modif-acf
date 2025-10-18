@@ -39,6 +39,11 @@ Cette solution propose une **interface utilisateur intuitive** permettant d'édi
 #### **Développement (actuel):**
 - Speed Modif ACF (Docker:8080) ←→ Base WordPress (WAMP:3306)
 
+#### **Architecture Finale :**
+- **Docker** : Serveur web conteneurisé (PHP 8.1 + Apache) - Port 8080  
+- **WAMP** : Base de données MySQL - Port 3306
+- **GitHub** : Versioning et déploiement du code source
+
 #### **Production (déploiement):**
 - Speed Modif ACF (Serveur Docker)
 - Base SMA (MySQL Docker/dédié) 
@@ -64,17 +69,30 @@ Cette solution propose une **interface utilisateur intuitive** permettant d'édi
 ### **Installation**
 
 1. Cloner le repository
-- git clone https://github.com/user/sma.git
-- cd sma
+- git clone https://github.com/username/speed-modif-acf.git
+- cd speed-modif-acf
 
-2. Lancer les conteneurs
+2. Construire et lancer le serveur Docker
+- docker-compose build --no-cache
 - docker-compose up -d
 
-3. Vérifier le fonctionnement
+
+3. Configuration base de données WAMP
+- Démarrer WAMP MySQL
+- Console MySQL :
+- CREATE DATABASE IF NOT EXISTS sma_database;
+- USE sma_database;
+- SOURCE database/sma_database.sql;
+
+4. Vérifier le fonctionnement
 - docker-compose ps
 - docker-compose logs web
 
-4. Accéder à l'application : http://localhost:8080
+5. Accéder à l'application
+- **Application** : http://localhost:8080
+- **Base WAMP** : http://localhost/phpmyadmin
+- **Vérification Docker** : `docker-compose ps`
+
 
 ### **Structure de Fichiers Requise**
 
@@ -87,11 +105,14 @@ Avant le déploiement, vérifier cette organisation :
 
 ### **Configuration Base de Données**
 
-Import du schéma SQL :
-- docker exec -i sma_mysql mysql -u sma_user -psma_password sma_database < database/sma_database.sql
+Import via console MySQL WAMP :
+- CREATE DATABASE IF NOT EXISTS sma_database;
+- USE sma_database;
+- SOURCE database/sma_database.sql;
 
 Vérification :
-- docker exec -it sma_mysql mysql -u sma_user -psma_password -e "SHOW TABLES;" sma_database
+- USE sma_database;
+- SHOW TABLES;
 
 Tables créées :
 - sma_users : Gestion des utilisateurs
