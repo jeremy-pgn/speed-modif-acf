@@ -1,15 +1,22 @@
-# .gitignore
+# .gitignore - Speed Modif ACF
 
-# Fichiers de configuration
-api/config.php
-config/database.php
+# Si en production, DÉCOMMENTE ces lignes :
+# api/config.php                    # Config avec vrais MDP production
+# .env                              # Variables d'environnement sensibles  
+# .env.production                   # Config production
+# docker-compose.prod.yml           # Config Docker production
+# ssl/                              # Certificats SSL/HTTPS
+# keys/                             # Clés d'API tierces
+# secrets/                          # Secrets et tokens
+# backups/                          # Backups automatiques (si sensibles)
 
-# Fichiers CSS
+# Fichiers CSS générés
 css/styles.css.map
 
 # Fichiers système
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Logs et temporaires
 *.log
@@ -20,3 +27,11 @@ cache/
 # Fichiers de sauvegarde
 *.bak
 *~
+*backup*.sql
+
+# Docker volumes locaux
+mysql_data/
+
+# IDE
+.vscode/settings.json
+.idea/

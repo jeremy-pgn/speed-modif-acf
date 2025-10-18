@@ -89,6 +89,21 @@ function syncToWordPress($fieldKey, $newValue) {
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+if (isset($_GET['history'])) {
+    $stmt = $pdo->prepare("
+        SELECT h.action, h.timestamp, h.old_value, h.new_value,
+               f.field_label, f.field_name, u.name as user_name
+        FROM sma_field_history h
+        LEFT JOIN sma_acf_fields f ON h.field_id = f.id  
+        LEFT JOIN sma_users u ON h.user_id = u.id
+        ORDER BY h.timestamp DESC LIMIT 20
+    ");
+    $stmt->execute();
+    echo json_encode(['success' => true, 'data' => $stmt->fetchAll()]);
+    exit;
+}
+
+
 try {
     if ($method === 'GET') {
         // ========================================

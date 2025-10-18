@@ -1,0 +1,38 @@
+
+
+SMA/
+│
+├── api/
+│   ├── auth.php
+│   ├── config.php
+│   └── fields.php
+│
+├── css/ 
+│   ├── _connexion.scss
+│   ├── _dashboard.scss
+│   ├── _sanitize.scss
+│   ├── _variables.scss
+│   ├── styles.css
+│   ├── styles.css.map
+│   └── styles.scss
+│
+├── database/  
+│   └── sma_database.sql
+│
+├── docs/
+│   └── README.md
+│
+├── img/
+│   └── icon/
+│
+├── js/
+│   ├── api.js
+│   └── app.js
+│
+├── .gitignore
+│
+├── dashboard.html 
+│
+├── docker-compose.yml
+│
+└── index.html
