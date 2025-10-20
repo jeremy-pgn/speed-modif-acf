@@ -499,7 +499,7 @@ async function handleEdit(fieldId, dbId) {
   const field = allFields.find((f) => f.id === fieldId);
   if (!field) return;
 
-  // Interface de modification simple (peut être remplacée par un modal)
+  // Interface de modification simple
   const newValue = prompt(`Modifier "${field.title}":`, field.preview);
 
   if (newValue !== null && newValue !== field.preview) {
