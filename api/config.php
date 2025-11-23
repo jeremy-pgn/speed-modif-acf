@@ -1,4 +1,5 @@
 <?php
+
 /**
  * api/config.cfg
  * Fichier de configuration principal de l'application Speed Modif ACF
@@ -7,13 +8,18 @@
 // api/config.php
 $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['SERVER_PORT'] ?? null) == 443);
 session_set_cookie_params([
-  'secure' => false,  // false en local HTTP
-  'httponly' => true,
-  'samesite' => 'Lax'
+    'secure' => false,  // false en local HTTP
+    'httponly' => true,
+    'samesite' => 'Lax'
 ]);
 session_start();
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;");
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: DENY");
+header("X-XSS-Protection: 1; mode=block");
+
 if (empty($_SESSION['csrf'])) {
-  $_SESSION['csrf'] = bin2hex(random_bytes(32));
+    $_SESSION['csrf'] = bin2hex(random_bytes(32));
 }
 
 // ========================================
@@ -95,7 +101,7 @@ try {
     // Connexion à la base de données WordPress
     $wp_dsn = "mysql:host=" . WP_HOST . ";dbname=" . WP_DATABASE . ";charset=utf8mb4";
     $wpPdo = new PDO($wp_dsn, WP_USER, WP_PASSWORD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-    
+
     // Récupération des champs ACF depuis WordPress
     // Exclut les champs système (préfixés par '_') et les valeurs vides
     $stmt = $wpPdo->prepare("
@@ -107,7 +113,7 @@ try {
     ");
     $stmt->execute([WP_POST_ID]);
     $wpFields = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // Synchronisation des données WordPress vers la base SMA
     foreach ($wpFields as $field) {
         // Mise à jour ou insertion des champs dans la base SMA
@@ -118,10 +124,8 @@ try {
         ");
         $updateStmt->execute([$field['meta_value'], $field['meta_key']]);
     }
-    
 } catch (Exception $e) {
     // Gestion silencieuse des erreurs de synchronisation
     // Les erreurs sont enregistrées dans les logs sans interrompre l'application
     error_log('Erreur synchronisation WordPress: ' . $e->getMessage());
 }
-?>

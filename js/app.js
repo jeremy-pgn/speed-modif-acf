@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 // ========================================
 // MODULE LOGIN
 // ========================================
@@ -169,7 +168,9 @@ async function loadACFData() {
        */
       async function generateHistory() {
         try {
-          const response = await fetch("/api/fields.php?history=1", { credentials: "same-origin" });
+          const response = await fetch("/api/fields.php?history=1", {
+            credentials: "same-origin",
+          });
           const data = await response.json();
           acfData.historique = data.success
             ? data.data.map((item) => ({
@@ -462,9 +463,10 @@ function renderSearchResults(results, searchTerm) {
                             Modifié le ${formatDate(field.lastModified)}
                         </div>
                         <div class="field-preview">${highlightText(
-                          escapeHtml(field.preview), 
+                          field.preview,
                           searchTerm
                         )}</div>
+
 
                         <button class="btn btn-edit w-100" data-field-id="${
                           field.id
@@ -509,11 +511,8 @@ async function handleEdit(fieldId, dbId) {
 
   // Vérifier d'abord que l'utilisateur a confirmé (rawValue !== null)
   if (rawValue !== null) {
-    // PROTECTION XSS : sanitiser puis échapper
-    const sanitized = sanitizeInput(rawValue);
-    const newValue = escapeHtml(sanitized);
+    const newValue = escapeHtml(rawValue.trim());
 
-    // Vérifier que la valeur a changé
     if (newValue !== field.preview) {
       try {
         // Appel à l'API de mise à jour
@@ -586,8 +585,14 @@ function formatDate(dateString) {
  * @returns {string} Texte avec surlignage HTML
  */
 function highlightText(text, searchTerm) {
-  const regex = new RegExp(`(${searchTerm})`, "gi");
-  return text.replace(regex, '<span class="search-highlight">$1</span>');
+  const escapedText = escapeHtml(text);
+  const escapedSearchTerm = escapeHtml(searchTerm);
+  const safeSearchTerm = escapedSearchTerm.replace(
+    /[.*+?^${}()|[\]\\]/g,
+    "\\$&"
+  );
+  const regex = new RegExp(`(${safeSearchTerm})`, "gi");
+  return escapedText.replace(regex, '<span class="search-highlight">$1</span>');
 }
 
 /**
