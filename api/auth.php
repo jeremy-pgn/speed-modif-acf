@@ -1,20 +1,27 @@
 <?php
-// api/auth.php
+header('Content-Type: application/json; charset=utf-8');
+require_once __DIR__ . '/config.php';
 
-// Inclusion du fichier de configuration de la base de données
-require_once 'config.php';
-
-// Démarrage de la session pour pouvoir stocker les informations utilisateur
-session_start();
-
-// Définition de l'en-tête pour indiquer que la réponse sera en JSON
-header('Content-Type: application/json');
-
-// Vérification que la requête utilise la méthode POST (sécurité)
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
-    exit;
+// Lire X-CSRF-Token
+$hdr = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+if (!$hdr) {
+  $all = function_exists('getallheaders') ? getallheaders() : [];
+  $hdr = $all['X-CSRF-Token'] ?? '';
 }
+
+if (!hash_equals($_SESSION['csrf'] ?? '', $hdr)) {
+  http_response_code(403);
+  echo json_encode(['success'=>false,'message'=>'Invalid CSRF token']);
+  exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+  http_response_code(405);
+  echo json_encode(['success'=>false,'message'=>'Méthode non autorisée']);
+  exit;
+}
+
+
 
 // Récupération et nettoyage des données du formulaire
 $email = $_POST['email'] ?? '';
@@ -34,12 +41,9 @@ try {
     
     // Si l'utilisateur existe dans la base
     if ($user) {
-        $isValidPassword = false;
-        
-        // Vérification du mot de passe avec méthodes de hachage 
-        
+        $isValidPassword = false;       
        
-        // Mot de passe hashé avec password_hash() 
+        // Vérification du hash avec password_verify 
         if (password_verify($password, $user['password'])) {
             $isValidPassword = true;
         }        
@@ -63,7 +67,9 @@ try {
     }
     
 } catch (Exception $e) {
-    // Gestion des erreurs de base de données ou autres exceptions
-    echo json_encode(['success' => false, 'message' => 'Erreur: ' . $e->getMessage()]);
+    // Gestion des erreurs
+   error_log('Auth error: '.$e->getMessage());    
+    echo json_encode(['success' => false, 'message' => 'Erreur interne.']);
+    exit;
 }
 ?>

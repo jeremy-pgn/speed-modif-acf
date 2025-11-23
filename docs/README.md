@@ -20,7 +20,7 @@ Cette solution propose une **interface utilisateur intuitive** permettant d'édi
 - Interface organisée par sections (7 sections : Identité, Header, Présentation, etc.)
 - Édition temps réel avec prévisualisation
 - API REST complète (GET/PUT) avec authentification requise
-- Synchronisation bidirectionnelle WordPress automatique
+- Synchronisation SMA → WordPress automatisée
 
 ### 📱 **Interface Responsive Bootstrap**
 - Design adaptatif complet (375px → 1920px+)
@@ -30,9 +30,9 @@ Cette solution propose une **interface utilisateur intuitive** permettant d'édi
 
 ### 📊 **Historique et Traçabilité**
 - Enregistrement de toutes les modifications (table sma_field_history)
-- Horodatage automatique et identification utilisateur
+- horodatage, utilisateur, action et titre du champ ACF
 - Interface dédiée pour consulter l'historique
-- Sauvegarde IP et données old/new pour audit complet
+- Sauvegarde IP et données old/new côté serveur.
 
 ### **Architecture Hybride**
 
@@ -40,7 +40,7 @@ Cette solution propose une **interface utilisateur intuitive** permettant d'édi
 - Speed Modif ACF (Docker:8080) ←→ Base WordPress (WAMP:3306)
 
 #### **Architecture Finale :**
-- **Docker** : Serveur web conteneurisé (PHP 8.1 + Apache) - Port 8080  
+- **Docker** : Serveur web conteneurisé (PHP 8.1 + Apache) - Port 8080 - service MySQL Docker défini mais non utilisé aujourd’hui (prévu)
 - **WAMP** : Base de données MySQL - Port 3306
 - **GitHub** : Versioning et déploiement du code source
 

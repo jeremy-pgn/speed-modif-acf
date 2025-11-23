@@ -26,15 +26,16 @@ let allFields = [];
  * Point d'entrée principal - Se déclenche quand le DOM est complètement chargé
  */
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("🚀 App.js chargé");
-
-  // Routage basé sur la page actuelle
-  if (window.location.pathname.includes("dashboard.html")) {
-    initDashboard();
-  } else {
-    initLogin();
-  }
+  console.log("App.js chargé");
+  window.API_READY.then(() => {
+    if (window.location.pathname.includes("dashboard.html")) {
+      initDashboard();
+    } else {
+      initLogin();
+    }
+  });
 });
+
 
 // ========================================
 // MODULE LOGIN
@@ -110,7 +111,7 @@ function initLogin() {
  * Charge les données et configure l'interface
  */
 async function initDashboard() {
-  // Affichage du nom d'utilisateur (peut être adapté pour récupérer le vrai nom)
+  // Affichage du nom d'utilisateur
   const userNameEl = document.getElementById("userName");
   if (userNameEl) {
     userNameEl.textContent = "Admin";
@@ -138,7 +139,7 @@ async function loadACFData() {
       acfData = {};
       allFields = [];
 
-      // Organisation des champs par sections (exactement comme le code original)
+      // Organisation des champs par sections
       response.data.forEach((field) => {
         const section = field.section || "autres";
         if (!acfData[section]) acfData[section] = [];
@@ -168,11 +169,11 @@ async function loadACFData() {
        */
       async function generateHistory() {
         try {
-          const response = await fetch("api/fields.php?history=1");
+          const response = await fetch("/api/fields.php?history=1", { credentials: "same-origin" });
           const data = await response.json();
           acfData.historique = data.success
             ? data.data.map((item) => ({
-                action: item.action, 
+                action: item.action,
                 field: item.field_label || item.field_name || "Champ inconnu",
                 user: item.user_name || "Utilisateur inconnu",
                 timestamp: item.timestamp,
@@ -247,7 +248,7 @@ function switchSection(section) {
 
   currentSection = section;
 
-  // Configuration des titres et descriptions (exactement comme le design original)
+  // Configuration des titres et descriptions
   const titles = {
     identite: {
       title: "Identité Visuelle",
@@ -314,7 +315,7 @@ function renderSection(section) {
     return;
   }
 
-  // Génération du HTML avec les classes exactes du design original
+  // Génération du HTMLl
   container.innerHTML = `
         <div class="row g-3">
             ${fields
@@ -328,7 +329,9 @@ function renderSection(section) {
                             <i class="bi bi-clock me-1"></i>
                             Modifié le ${formatDate(field.lastModified)}
                         </div>
-                        <div class="field-preview">${field.preview}</div>
+                        <div class="field-preview">${escapeHtml(
+                          field.preview
+                        )}</div>
                         <button class="btn btn-edit w-100" data-field-id="${
                           field.id
                         }" data-db-id="${field.dbId}">
@@ -459,9 +462,10 @@ function renderSearchResults(results, searchTerm) {
                             Modifié le ${formatDate(field.lastModified)}
                         </div>
                         <div class="field-preview">${highlightText(
-                          field.preview,
+                          escapeHtml(field.preview), 
                           searchTerm
                         )}</div>
+
                         <button class="btn btn-edit w-100" data-field-id="${
                           field.id
                         }" data-db-id="${field.dbId}">
@@ -499,28 +503,33 @@ async function handleEdit(fieldId, dbId) {
   const field = allFields.find((f) => f.id === fieldId);
   if (!field) return;
 
+  // Usage
   // Interface de modification simple
-  const newValue = prompt(`Modifier "${field.title}":`, field.preview);
+  const rawValue = prompt(`Modifier "${field.title}":`, field.preview);
 
-  if (newValue !== null && newValue !== field.preview) {
-    try {
-      // Appel à l'API de mise à jour
-      const result = await API.updateField(dbId, newValue);
+  // Vérifier d'abord que l'utilisateur a confirmé (rawValue !== null)
+  if (rawValue !== null) {
+    // PROTECTION XSS : sanitiser puis échapper
+    const sanitized = sanitizeInput(rawValue);
+    const newValue = escapeHtml(sanitized);
 
-      if (result.success) {
-        // Mise à jour locale immédiate
-        field.preview = newValue;
-        field.lastModified = new Date().toISOString();
+    // Vérifier que la valeur a changé
+    if (newValue !== field.preview) {
+      try {
+        // Appel à l'API de mise à jour
+        const result = await API.updateField(dbId, newValue);
 
-        // Rafraîchissement de l'affichage
-        switchSection(currentSection);
-
-        alert("Champ mis à jour et synchronisé !");
-      } else {
-        alert("Erreur : " + result.message);
+        if (result.success) {
+          field.preview = newValue;
+          field.lastModified = new Date().toISOString();
+          switchSection(currentSection);
+          alert("Champ mis à jour et synchronisé !");
+        } else {
+          alert("Erreur : " + result.message);
+        }
+      } catch (error) {
+        alert("Erreur lors de la mise à jour");
       }
-    } catch (error) {
-      alert("Erreur lors de la mise à jour");
     }
   }
 }
@@ -537,6 +546,22 @@ function handleLogout() {
 // ========================================
 // FONCTIONS UTILITAIRES
 // ========================================
+
+// Protection XSS (encode les caractères)
+function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+// PROTECTION XSS (supprime les balises)
+function sanitizeInput(input) {
+  if (!input) return "";
+  // Suppression simple des balises HTML
+  return input.replace(/<[^>]*>?/gm, "");
+}
 
 /**
  * Formatage des dates pour l'affichage

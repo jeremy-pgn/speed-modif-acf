@@ -36,112 +36,112 @@
   <body>
     <!-- Header avec logo -->
     <header class="py-4">
-        <div class="container text-center">
-            <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
-                <div class="logo-s">S</div>
-                <span class="logo-speed">SPEED</span>
-                <span class="logo-modif">MODIF</span>
-                <span class="logo-acf">ACF</span>
-            </div>
-            <p class="text-muted small">Fast. Simple. Secure.</p>
+      <div class="container text-center">
+        <div
+          class="d-flex align-items-center justify-content-center gap-2 mb-2">
+          <div class="logo-s">S</div>
+          <span class="logo-speed">SPEED</span>
+          <span class="logo-modif">MODIF</span>
+          <span class="logo-acf">ACF</span>
         </div>
+        <p class="text-muted small">Fast. Simple. Secure.</p>
+      </div>
     </header>
 
     <!-- Main Content -->
     <main class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-6 col-lg-4">
-                <!-- Card de connexion -->
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white text-center">
-                        <h1 class="h5 mb-0">
-                            <i class="bi bi-shield-lock me-2"></i>
-                            Connexion
-                        </h1>
-                    </div>
-                    
-                    <div class="card-body">
-                        <!-- Message d'erreur -->
-                        <div class="alert alert-danger d-none" id="errorMessage" role="alert">
-                            <i class="bi bi-exclamation-triangle me-2"></i>
-                            <span id="errorText">Identifiants incorrects.</span>
-                        </div>
-
-                        <!-- Formulaire -->
-                        <form id="loginForm" method="POST" action="auth.php" novalidate>
-                            <!-- Protection CSRF -->
-                            <input type="hidden" name="csrf_token" id="csrfToken">
-                            
-                            <!-- Email -->
-                            <div class="mb-3">
-                                <label for="email" class="form-label">
-                                    <i class="bi bi-envelope me-1"></i>
-                                    Email
-                                </label>
-                                <input 
-                                    type="email" 
-                                    class="form-control" 
-                                    id="email" 
-                                    name="email"
-                                    placeholder="votre@email.com"
-                                    required
-                                    autocomplete="email"
-                                >
-                                <div class="invalid-feedback">
-                                    Email invalide.
-                                </div>
-                            </div>
-
-                            <!-- Mot de passe -->
-                            <div class="mb-3">
-                                <label for="password" class="form-label">
-                                    <i class="bi bi-key me-1"></i>
-                                    Mot de passe
-                                </label>
-                                <input 
-                                    type="password" 
-                                    class="form-control" 
-                                    id="password" 
-                                    name="password"
-                                    placeholder="Votre mot de passe"
-                                    required
-                                    autocomplete="current-password"
-                                    minlength="8"
-                                >
-                                <div class="invalid-feedback">
-                                    Mot de passe requis (8 caractères min).
-                                </div>
-                            </div>                           
-
-                            <!-- Bouton -->
-                            <div class="d-grid mb-3 mt-4">
-                                <button type="submit" class="btn btn-primary" id="loginButton">
-                                    <i class="bi bi-box-arrow-in-right me-2"></i>
-                                    <span id="buttonText">Se connecter</span>
-                                    <span class="spinner-border spinner-border-sm ms-2 d-none" id="loginSpinner"></span>
-                                </button>
-                            </div>
-
-                            <!-- Lien -->
-                            <div class="text-center">
-                                <a href="#" class="text-decoration-none small">
-                                    <i class="bi bi-question-circle me-1"></i>
-                                    Mot de passe oublié ?
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4">
+          <!-- Card de connexion -->
+          <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+              <h1 class="h5 mb-0">
+                <i class="bi bi-shield-lock me-2"></i>
+                Connexion
+              </h1>
             </div>
+
+            <div class="card-body">
+              <!-- Message d'erreur -->
+              <div
+                class="alert alert-danger d-none"
+                id="errorMessage"
+                role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                <span id="errorText">Identifiants incorrects.</span>
+              </div>
+
+              <!-- Formulaire -->
+              <form id="loginForm" novalidate>
+                <!-- Email -->
+                <div class="mb-3">
+                  <label for="email" class="form-label">
+                    <i class="bi bi-envelope me-1"></i>
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="votre@email.com"
+                    required
+                    aria-required="true"
+                    autocomplete="email" />
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="mb-3">
+                  <label for="password" class="form-label">
+                    <i class="bi bi-key me-1"></i>
+                    Mot de passe
+                  </label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Votre mot de passe"
+                    required
+                    autocomplete="current-password"
+                    minlength="8" />
+                </div>
+
+                <!-- Bouton -->
+                <div class="d-grid mb-3 mt-4">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="loginButton">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                    <span id="buttonText">Se connecter</span>
+                    <span
+                      class="spinner-border spinner-border-sm ms-2 d-none"
+                      id="loginSpinner"></span>
+                  </button>
+                </div>
+
+                <!-- Lien -->
+                <div class="text-center">
+                  <a href="#" class="text-decoration-none small">
+                    <i class="bi bi-question-circle me-1"></i>
+                    Mot de passe oublié ?
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
+      </div>
     </main>
 
     <!-- Footer -->
     <footer class="text-center py-3 mt-4">
-        <small class="text-muted"><a class="footer-mentions me-1" href="#">Mentions légales</a> |
-            <i class="bi bi-c-circle mx-1"></i>
-            2025 - Speed Modif ACF
-        </small>
+      <small class="text-muted"
+        ><a class="footer-mentions me-1" href="#">Mentions légales</a> |
+        <i class="bi bi-c-circle mx-1"></i>
+        2025 - Speed Modif ACF
+      </small>
     </footer>
 
     <!-- Bootstrap JS -->

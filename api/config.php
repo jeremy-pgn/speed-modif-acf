@@ -4,6 +4,17 @@
  * Fichier de configuration principal de l'application Speed Modif ACF
  * Gère la connexion à la base de données SMA et la synchronisation avec WordPress
  */
+// api/config.php
+$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['SERVER_PORT'] ?? null) == 443);
+session_set_cookie_params([
+  'secure' => false,  // false en local HTTP
+  'httponly' => true,
+  'samesite' => 'Lax'
+]);
+session_start();
+if (empty($_SESSION['csrf'])) {
+  $_SESSION['csrf'] = bin2hex(random_bytes(32));
+}
 
 // ========================================
 // CONFIGURATION BASE DE DONNÉES SMA
@@ -32,7 +43,8 @@ $options = [
 try {
     $pdo = new PDO($dsn, $username, $password_db, $options);
 } catch (PDOException $e) {
-    die("Erreur de connexion à la base SMA : " . $e->getMessage());
+    error_log("Erreur connexion DB: " . $e->getMessage());
+    die("Erreur de connexion à la base de données.");
 }
 
 // ========================================
