@@ -1,7 +1,7 @@
 <?php
 
 /**
- * api/config.cfg
+ * api/config.php
  * Fichier de configuration principal de l'application Speed Modif ACF
  * Gère la connexion à la base de données SMA et la synchronisation avec WordPress
  */
